@@ -19,11 +19,11 @@
     didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     
-    OTMailURL *mailURL = [[OTMailURL alloc] initWithString:@"mailto:?to=alice@example.com&cc=bob@example.com&body=bodytext&subject=hello"];
+    OTMailURL *mailURL = [[OTMailURL alloc] initWithString:@"mailto:?to=alice@example.com,bob@example.com&cc=bob@example.com&body=bodytext&subject=hello"];
     NSLog(@"to: %@\ncc: %@\nbcc: %@\nsubject: %@\nbody %@\n",
-          mailURL.toMailAddress,
-          mailURL.ccMailAddress,
-          mailURL.bccMailAddress,
+          mailURL.toMailAddresses,
+          mailURL.ccMailAddresses,
+          mailURL.bccMailAddresses,
           mailURL.subject,
           mailURL.body);
     
