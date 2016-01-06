@@ -70,6 +70,7 @@
     NSString *mailQueryString;
     [[self class] parseURLBody:mailAndQueryString mailAddress:&mailAddressBodyString queryString:&mailQueryString];
 
+    mailAddressBodyString = [[self class] urlDecode:mailAddressBodyString];
     [self addToAddressesByString:mailAddressBodyString];
 
     NSArray *components = [[self class] queryComponentsForQueryString:mailQueryString];
