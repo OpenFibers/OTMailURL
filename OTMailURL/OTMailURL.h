@@ -15,10 +15,10 @@
 - (instancetype)initWithString:(NSString *)URLString;
 
 @property (nonatomic, readonly) NSString *originalURLString;
-@property (nonatomic, strong) NSArray<NSString *> *toMailAddresses;
-@property (nonatomic, strong) NSArray<NSString *> *ccMailAddresses;
-@property (nonatomic, strong) NSArray<NSString *> *bccMailAddresses;
-@property (nonatomic, strong) NSString *subject;
-@property (nonatomic, strong) NSString *body;
+@property (nonatomic, readonly) NSArray<NSString *> *toMailAddresses;
+@property (nonatomic, readonly) NSArray<NSString *> *ccMailAddresses;
+@property (nonatomic, readonly) NSArray<NSString *> *bccMailAddresses;
+@property (nonatomic, readonly) NSString *subject;
+@property (nonatomic, readonly) NSString *body;
 
 @end

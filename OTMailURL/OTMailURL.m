@@ -16,6 +16,25 @@
 
 @implementation OTMailURL
 
+#pragma mark - Readonly properties
+
+- (NSArray<NSString *> *)toMailAddresses
+{
+    return [NSArray arrayWithArray:self.parsingToMailAddresses];
+}
+
+- (NSArray<NSString *> *)ccMailAddresses
+{
+    return [NSArray arrayWithArray:self.parsingCcMailAddresses];
+}
+
+- (NSArray<NSString *> *)bccMailAddresses
+{
+    return [NSArray arrayWithArray:self.parsingBccMailAddresses];
+}
+
+#pragma mark - Parse methods
+
 + (instancetype)URLWithString:(NSString *)URLString
 {
     return [[self alloc] initWithString:URLString];
@@ -50,6 +69,84 @@
     NSString *mailAddressBodyString;
     NSString *mailQueryString;
     [[self class] parseURLBody:mailAndQueryString mailAddress:&mailAddressBodyString queryString:&mailQueryString];
+
+    [self addToAddressesByString:mailAddressBodyString];
+
+    NSArray *components = [[self class] queryComponentsForQueryString:mailQueryString];
+    for (NSString *singleComponent in components)
+    {
+        NSString *key;
+        NSString *value;
+        [[self class] parseQueryComponent:singleComponent key:&key value:&value];
+        value = [[self class] urlDecode:value];
+
+        if ([[key lowercaseString] isEqualToString:@"to"])
+        {
+            [self addToAddressesByString:value];
+        }
+        else if ([[key lowercaseString] isEqualToString:@"cc"])
+        {
+            [self addCcAddressesByString:value];
+        }
+        else if ([[key lowercaseString] isEqualToString:@"bcc"])
+        {
+            [self addBccAddressesByString:value];
+        }
+        else if ([[key lowercaseString] isEqualToString:@"subject"])
+        {
+            [self setSubjectByValue:value];
+        }
+        else if ([[key lowercaseString] isEqualToString:@"body"])
+        {
+            [self setBodyByValue:value];
+        }
+    }
+}
+
+- (void)addToAddressesByString:(NSString *)toMailAddress
+{
+    NSArray *mailAddresses = [[self class] mailAddressesFromCombinedMailString:toMailAddress];
+    for (NSString *eachAddress in mailAddresses)
+    {
+        if (![self.parsingToMailAddresses containsObject:eachAddress])
+        {
+            [self.parsingToMailAddresses addObject:eachAddress];
+        }
+    }
+}
+
+- (void)addCcAddressesByString:(NSString *)ccMailAddress
+{
+    NSArray *mailAddresses = [[self class] mailAddressesFromCombinedMailString:ccMailAddress];
+    for (NSString *eachAddress in mailAddresses)
+    {
+        if (![self.parsingCcMailAddresses containsObject:eachAddress])
+        {
+            [self.parsingCcMailAddresses addObject:eachAddress];
+        }
+    }
+}
+
+- (void)addBccAddressesByString:(NSString *)bccMailAddress
+{
+    NSArray *mailAddresses = [[self class] mailAddressesFromCombinedMailString:bccMailAddress];
+    for (NSString *eachAddress in mailAddresses)
+    {
+        if (![self.parsingBccMailAddresses containsObject:eachAddress])
+        {
+            [self.parsingBccMailAddresses addObject:eachAddress];
+        }
+    }
+}
+
+- (void)setSubjectByValue:(NSString *)value
+{
+    _subject = value;
+}
+
+- (void)setBodyByValue:(NSString *)value
+{
+    _body = value;
 }
 
 //remove all whitespace from string
@@ -130,12 +227,41 @@
     return;
 }
 
-//parse combined mail string
+//parse combined mail string into array, invalid address won't be added into return array
 //e.g. combinedMailString is 'alice@example.com,bob@example.com', return ['alice@example.com','bob@example.com']
 + (NSArray<NSString *> *)mailAddressesFromCombinedMailString:(NSString *)combinedMailString
 {
     NSArray *mailAddresses = [combinedMailString componentsSeparatedByString:@","];
-    return mailAddresses;
+    NSMutableArray *validMailAddresses = [NSMutableArray array];
+    for (NSString *eachAddress in mailAddresses)
+    {
+        if ([self isValidEmailAddress:eachAddress])
+        {
+            [validMailAddresses addObject:[eachAddress lowercaseString]];
+        }
+    }
+    return [NSArray arrayWithArray:validMailAddresses];
+}
+
+//decide whether string is a valid email address
++ (BOOL)isValidEmailAddress:(NSString *)emailAddressToDecide
+{
+    static NSPredicate *emailPredicate = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        NSString *stricterFilterString = @"[A-Z0-9a-z._%+-]+@[A-Za-z0-9._-]+\\.[A-Za-z]{2,4}";
+        NSString *emailRegex = stricterFilterString;
+        emailPredicate = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", emailRegex];
+    });
+    return [emailPredicate evaluateWithObject:emailAddressToDecide];
+}
+
+//url decode
++ (NSString *)urlDecode:(NSString *)stringToDecode
+{
+    return (__bridge_transfer NSString *)CFURLCreateStringByReplacingPercentEscapes(NULL,
+                                                                                    (__bridge CFStringRef)stringToDecode,
+                                                                                    (CFStringRef) @"");
 }
 
 @end
