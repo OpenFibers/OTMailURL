@@ -13,6 +13,7 @@
 		4216DB6D1C3CBD5000213A40 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4216DB6B1C3CBD5000213A40 /* Main.storyboard */; };
 		4216DB6F1C3CBD5000213A40 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4216DB6E1C3CBD5000213A40 /* Assets.xcassets */; };
 		4216DB721C3CBD5000213A40 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4216DB701C3CBD5000213A40 /* LaunchScreen.storyboard */; };
+		4216DB7C1C3CBD6700213A40 /* OTMailURL.m in Sources */ = {isa = PBXBuildFile; fileRef = 4216DB7B1C3CBD6700213A40 /* OTMailURL.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +27,8 @@
 		4216DB6E1C3CBD5000213A40 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4216DB711C3CBD5000213A40 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		4216DB731C3CBD5000213A40 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		4216DB7A1C3CBD6700213A40 /* OTMailURL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OTMailURL.h; sourceTree = "<group>"; };
+		4216DB7B1C3CBD6700213A40 /* OTMailURL.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OTMailURL.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -42,6 +45,7 @@
 		4216DB561C3CBD5000213A40 = {
 			isa = PBXGroup;
 			children = (
+				4216DB791C3CBD5F00213A40 /* OTMailURL */,
 				4216DB611C3CBD5000213A40 /* OTMailURLDemo */,
 				4216DB601C3CBD5000213A40 /* Products */,
 			);
@@ -77,6 +81,15 @@
 				4216DB631C3CBD5000213A40 /* main.m */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		4216DB791C3CBD5F00213A40 /* OTMailURL */ = {
+			isa = PBXGroup;
+			children = (
+				4216DB7A1C3CBD6700213A40 /* OTMailURL.h */,
+				4216DB7B1C3CBD6700213A40 /* OTMailURL.m */,
+			);
+			path = OTMailURL;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -152,6 +165,7 @@
 				4216DB6A1C3CBD5000213A40 /* ViewController.m in Sources */,
 				4216DB671C3CBD5000213A40 /* AppDelegate.m in Sources */,
 				4216DB641C3CBD5000213A40 /* main.m in Sources */,
+				4216DB7C1C3CBD6700213A40 /* OTMailURL.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
